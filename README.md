@@ -1,6 +1,6 @@
-# F2 EM Structure Function — ML 
+# F2 EM Structure Function — ML Portfolio
 
-A self-contained machine learning project that models and extrapolates the
+A self-contained machine-learning project that models and extrapolates the
 **proton electromagnetic structure function F<sub>2</sub>(x, Q<sup>2</sup>)** into the low-x region
 using a full suite of supervised and unsupervised methods.
 

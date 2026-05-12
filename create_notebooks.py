@@ -114,7 +114,7 @@ print(summary.to_string())
         code("a5", '''fig, ax = plt.subplots(figsize=(7, 5))
 plot_coverage(df, ax=ax)
 plt.tight_layout()
-plt.savefig("../results/figures/00_coverage.png", dpi=150)
+#plt.savefig("../results/figures/00_coverage.png", dpi=150)
 plt.show()
 '''),
 
@@ -132,16 +132,16 @@ axes[1].set_xlabel(r"$\\log_{10}(x)$", fontsize=12)
 axes[1].set_title(r"Distribution of $\\log_{10}(x)$", fontsize=12)
 
 plt.tight_layout()
-plt.savefig("../results/figures/00_distributions.png", dpi=150)
+#plt.savefig("../results/figures/00_distributions.png", dpi=150)
 plt.show()
 '''),
 
         md("a8", r"""## $F_2^p$ vs $x$ at Fixed $Q^2$ Bins"""),
 
-        code("a9", '''Q2_vals = [0.5, 1.0, 2.0, 5.0, 10.0, 20.0]
+        code("a9", '''Q2_vals = [8.5, 15.0, 30.0, 60.0, 120.0]
 fig, axes = plot_F2_vs_x(df, Q2_vals, ncols=3)
 fig.suptitle(r"$F_2^p$ vs $x$ in $Q^2$ bins", fontsize=13, y=1.01)
-plt.savefig("../results/figures/00_F2_vs_x.png", dpi=150, bbox_inches="tight")
+#plt.savefig("../results/figures/00_F2_vs_x.png", dpi=150, bbox_inches="tight")
 plt.show()
 '''),
 
@@ -150,16 +150,13 @@ plt.show()
         code("a11", '''from visualization import EXP_COLORS
 
 x_centres = [0.008, 0.025, 0.07, 0.18, 0.45]
-delta_log  = 0.3
 
 fig, axes = plt.subplots(1, len(x_centres), figsize=(16, 4), sharey=False)
 for ax, xc in zip(axes, x_centres):
-    lo = 10 ** (np.log10(xc) - delta_log)
-    hi = 10 ** (np.log10(xc) + delta_log)
-    sub = df[(df["x"] >= lo) & (df["x"] <= hi)]
+    sub = df[df["x"] == xc]
     for exp, grp in sub.groupby("experiment"):
         ax.errorbar(grp["Q2"], grp["F2"],
-                    yerr=[grp["sigma"], grp["sigma"]],
+                    yerr=[grp["sigma_dn"], grp["sigma_up"]],
                     fmt="o", ms=3, alpha=0.8,
                     color=EXP_COLORS.get(exp, "grey"), label=exp)
     ax.set_xscale("log")
@@ -170,7 +167,7 @@ for ax, xc in zip(axes, x_centres):
     ax.grid(True, ls="--", alpha=0.3)
 
 plt.tight_layout()
-plt.savefig("../results/figures/00_F2_vs_Q2.png", dpi=150)
+#plt.savefig("../results/figures/00_F2_vs_Q2.png", dpi=150)
 plt.show()
 '''),
 
@@ -186,7 +183,7 @@ sns.heatmap(feat_df.corr(), annot=True, fmt=".2f", cmap="coolwarm",
             center=0, ax=ax, linewidths=0.5)
 ax.set_title("Pearson correlation matrix", fontsize=12)
 plt.tight_layout()
-plt.savefig("../results/figures/00_correlation.png", dpi=150)
+#plt.savefig("../results/figures/00_correlation.png", dpi=150)
 plt.show()
 '''),
 
@@ -341,7 +338,7 @@ for Q2v, (x_arr, X_feat) in grids.items():
 
 fig, _ = comparison_figure(Q2_plot, df, predictions)
 fig.suptitle("Polynomial Regression (deg 3) — predictions vs data", y=1.01)
-plt.savefig("../results/figures/01_poly_predictions.png", dpi=150, bbox_inches="tight")
+#plt.savefig("../results/figures/01_poly_predictions.png", dpi=150, bbox_inches="tight")
 plt.show()
 '''),
     ]
@@ -453,7 +450,7 @@ for Q2v, (x_arr, X_feat) in grids.items():
 
 fig, _ = comparison_figure(Q2_plot, df, [preds_rbf, preds_mat])
 fig.suptitle("GPR predictions with 2σ uncertainty bands", y=1.01)
-plt.savefig("../results/figures/02_gpr_predictions.png", dpi=150, bbox_inches="tight")
+#plt.savefig("../results/figures/02_gpr_predictions.png", dpi=150, bbox_inches="tight")
 plt.show()
 '''),
 
@@ -524,7 +521,7 @@ for bar, val in zip(bars, importances):
     ax.text(val + 0.005, bar.get_y() + bar.get_height()/2,
             f"{val:.3f}", va="center", fontsize=10)
 plt.tight_layout()
-plt.savefig("../results/figures/03_rf_importance.png", dpi=150)
+#plt.savefig("../results/figures/03_rf_importance.png", dpi=150)
 plt.show()
 '''),
 
@@ -563,7 +560,7 @@ for bar, val in zip(bars, xgb_imp):
     ax.text(val + 0.005, bar.get_y() + bar.get_height()/2,
             f"{val:.3f}", va="center", fontsize=10)
 plt.tight_layout()
-plt.savefig("../results/figures/03_xgb_importance.png", dpi=150)
+#plt.savefig("../results/figures/03_xgb_importance.png", dpi=150)
 plt.show()
 '''),
 
@@ -590,7 +587,7 @@ preds = [
 
 fig, _ = comparison_figure(Q2_plot, df, preds)
 fig.suptitle("Tree ensemble predictions vs data (note flat low-x tails)", y=1.01)
-plt.savefig("../results/figures/03_tree_predictions.png", dpi=150, bbox_inches="tight")
+#plt.savefig("../results/figures/03_tree_predictions.png", dpi=150, bbox_inches="tight")
 plt.show()
 '''),
     ]
@@ -663,7 +660,7 @@ axes[1].set_ylabel(f"PC2 ({pca.explained_variance_ratio_[1]*100:.1f}%)")
 axes[1].set_title(r"PCA — coloured by $\log_{10}(x)$")
 
 plt.tight_layout()
-plt.savefig("../results/figures/04_pca.png", dpi=150)
+#plt.savefig("../results/figures/04_pca.png", dpi=150)
 plt.show()
 '''),
 
@@ -687,7 +684,7 @@ axes[1].set_title(r"t-SNE — coloured by $\log_{10}(x)$")
 axes[1].set_xlabel("t-SNE 1"); axes[1].set_ylabel("t-SNE 2")
 
 plt.tight_layout()
-plt.savefig("../results/figures/04_tsne.png", dpi=150)
+#plt.savefig("../results/figures/04_tsne.png", dpi=150)
 plt.show()
 '''),
 
@@ -737,7 +734,7 @@ axes[1].set_title("F2 coloured by kinematic cluster")
 axes[1].legend(fontsize=8, ncol=2)
 
 plt.tight_layout()
-plt.savefig("../results/figures/04_kmeans.png", dpi=150)
+#plt.savefig("../results/figures/04_kmeans.png", dpi=150)
 plt.show()
 
 # Mean F2 per cluster
@@ -769,7 +766,7 @@ ax.set_xlabel(r"$x$"); ax.set_ylabel(r"$Q^2$ [GeV$^2$]")
 ax.set_title("DBSCAN clusters")
 ax.legend(fontsize=8, ncol=2)
 plt.tight_layout()
-plt.savefig("../results/figures/04_dbscan.png", dpi=150)
+#plt.savefig("../results/figures/04_dbscan.png", dpi=150)
 plt.show()
 '''),
 
@@ -799,7 +796,7 @@ axes[1].set_xlabel(r"$x$"); axes[1].set_ylabel(r"$F_2^p$")
 axes[1].set_title("Anomalies in $(x, F_2)$ plane")
 
 plt.tight_layout()
-plt.savefig("../results/figures/04_isolation_forest.png", dpi=150)
+#plt.savefig("../results/figures/04_isolation_forest.png", dpi=150)
 plt.show()
 
 # Which experiments do the anomalies come from?
@@ -949,7 +946,7 @@ axes[1].set_xlabel("Latent dim 1"); axes[1].set_ylabel("Latent dim 2")
 axes[1].set_title(r"Bottleneck representation — coloured by $\log_{10}(x)$")
 
 plt.tight_layout()
-plt.savefig("../results/figures/05_latent_space.png", dpi=150)
+#plt.savefig("../results/figures/05_latent_space.png", dpi=150)
 plt.show()
 '''),
 
@@ -966,7 +963,7 @@ for Q2v, (x_arr, X_feat) in grids.items():
 
 fig, _ = comparison_figure(Q2_plot, df, [pred_ae])
 fig.suptitle("Bottleneck NN — predictions and low-x extrapolation", y=1.01)
-plt.savefig("../results/figures/05_ae_predictions.png", dpi=150, bbox_inches="tight")
+#plt.savefig("../results/figures/05_ae_predictions.png", dpi=150, bbox_inches="tight")
 plt.show()
 '''),
     ]
@@ -1117,7 +1114,7 @@ for Q2v, (x_arr, X_feat) in grids.items():
 
 fig, _ = comparison_figure(Q2_plot, df, predictions, figsize=(18, 14))
 fig.suptitle("Low-x extrapolation — all supervised methods", fontsize=14, y=1.01)
-plt.savefig("../results/figures/06_all_models.png", dpi=150, bbox_inches="tight")
+#plt.savefig("../results/figures/06_all_models.png", dpi=150, bbox_inches="tight")
 plt.show()
 '''),
 
@@ -1225,7 +1222,7 @@ if __name__ == "__main__":
     make_05()
     make_06()
 
-    readme_path = Path(__file__).parent / "README.md"
-    readme_path.write_text(README, encoding="utf-8")
-    print(f"  Written: {readme_path}")
+    # readme_path = Path(__file__).parent / "README.md"
+    # readme_path.write_text(README, encoding="utf-8")
+    # print(f"  Written: {readme_path}")
     print("Done.")

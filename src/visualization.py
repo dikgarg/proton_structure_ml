@@ -39,8 +39,13 @@ def plot_coverage(df, ax=None, title="Data coverage in the $(x, Q^2)$ plane"):
     return ax
 
 
-def plot_F2_vs_x(df, Q2_centres, delta_log=0.25, figsize=None, ncols=3):
-    """Grid of F₂ vs x panels, one per Q² bin."""
+def plot_F2_vs_x(df, Q2_centres, delta=0.1, figsize=None, ncols=3):
+    """Grid of F₂ vs x panels, one per Q² bin.
+
+    delta_log=0.05 means Q2 is within +/-10% of the centre value.
+    A narrow window is needed because experiments measure at different Q2 points.
+    """
+    delta_log = np.log10(delta)
     nrows = int(np.ceil(len(Q2_centres) / ncols))
     if figsize is None:
         figsize = (5 * ncols, 4 * nrows)
@@ -49,12 +54,13 @@ def plot_F2_vs_x(df, Q2_centres, delta_log=0.25, figsize=None, ncols=3):
 
     for i, Q2c in enumerate(Q2_centres):
         ax = axes_flat[i]
-        lo, hi = 10 ** (np.log10(Q2c) - delta_log), 10 ** (np.log10(Q2c) + delta_log)
+        lo = 10 ** (np.log10(Q2c) - delta_log)
+        hi = 10 ** (np.log10(Q2c) + delta_log)
         sub = df[(df["Q2"] >= lo) & (df["Q2"] <= hi)]
         for exp, grp in sub.groupby("experiment"):
             ax.errorbar(
                 grp["x"], grp["F2"],
-                yerr=[grp["sigma"], grp["sigma"]],
+                yerr=[grp["sigma_dn"], grp["sigma_up"]],
                 fmt="o", ms=3, alpha=0.8,
                 color=EXP_COLORS.get(exp, "grey"),
                 label=exp,
@@ -62,7 +68,7 @@ def plot_F2_vs_x(df, Q2_centres, delta_log=0.25, figsize=None, ncols=3):
         ax.set_xscale("log")
         ax.set_xlabel(r"$x$", fontsize=10)
         ax.set_ylabel(r"$F_2^p$", fontsize=10)
-        ax.set_title(rf"$Q^2 \approx {Q2c}\;\mathrm{{GeV}}^2$", fontsize=10)
+        ax.set_title(rf"$Q^2 = {Q2c} \pm 5\%\;\mathrm{{GeV}}^2$", fontsize=10)
         ax.legend(fontsize=7, ncol=2)
         ax.grid(True, ls="--", alpha=0.3)
 
@@ -83,12 +89,12 @@ def overlay_predictions(ax, x_arr, y_pred, label, color, lw=2.0, ls="-",
     return ax
 
 
-def comparison_figure(Q2_values, data_df, predictions, delta_log=0.25, figsize=None):
+def comparison_figure(Q2_values, data_df, predictions, figsize=None):
     """Panel figure comparing multiple model predictions against data.
 
     Parameters
     ----------
-    Q2_values  : list of Q² values for the panels
+    Q2_values  : list of exact Q² values for the panels
     data_df    : full DataFrame with experimental points
     predictions: list of dicts, each with keys
                    'label', 'color', 'x_arr',
@@ -105,13 +111,11 @@ def comparison_figure(Q2_values, data_df, predictions, delta_log=0.25, figsize=N
 
     for i, Q2c in enumerate(Q2_values):
         ax = axes_flat[i]
-        lo = 10 ** (np.log10(Q2c) - delta_log)
-        hi = 10 ** (np.log10(Q2c) + delta_log)
-        sub = data_df[(data_df["Q2"] >= lo) & (data_df["Q2"] <= hi)]
+        sub = data_df[data_df["Q2"] == Q2c]
         for exp, grp in sub.groupby("experiment"):
             ax.errorbar(
                 grp["x"], grp["F2"],
-                yerr=[grp["sigma"], grp["sigma"]],
+                yerr=[grp["sigma_dn"], grp["sigma_up"]],
                 fmt="o", ms=3, alpha=0.7,
                 color=EXP_COLORS.get(exp, "grey"),
                 label=exp,
@@ -129,7 +133,7 @@ def comparison_figure(Q2_values, data_df, predictions, delta_log=0.25, figsize=N
         ax.set_xscale("log")
         ax.set_xlabel(r"$x$", fontsize=10)
         ax.set_ylabel(r"$F_2^p$", fontsize=10)
-        ax.set_title(rf"$Q^2 \approx {Q2c}\;\mathrm{{GeV}}^2$", fontsize=10)
+        ax.set_title(rf"$Q^2 = {Q2c} \pm 5\%\;\mathrm{{GeV}}^2$", fontsize=10)
         ax.legend(fontsize=7, ncol=2)
         ax.grid(True, ls="--", alpha=0.3)
 

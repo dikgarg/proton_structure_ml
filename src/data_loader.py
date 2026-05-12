@@ -40,7 +40,8 @@ def load_single_file(filepath):
     )
     stem = Path(filepath).stem          # e.g. 'H1-F2p-q0'
     df["experiment"] = stem.split("-")[0]
-    df["sigma"] = 0.5 * (df["tot_up"].abs() + df["tot_dn"].abs())
+    df["sigma_up"] = df["tot_up"].abs()
+    df["sigma_dn"] = df["tot_dn"].abs()
     df = df[(df["x"] > 0) & (df["Q2"] > 0) & (df["F2"] > 0)].copy()
     return df
 
@@ -55,6 +56,8 @@ def load_lepton_dis(data_dir, pattern="*-F2p*-q0.dat"):
     frames = [load_single_file(f) for f in files]
     combined = pd.concat(frames, ignore_index=True)
     print(f"Loaded {len(files)} experiment files → {len(combined)} data points")
+    for f in files:
+        print(f"  {Path(f).name}")
     return combined
 
 
