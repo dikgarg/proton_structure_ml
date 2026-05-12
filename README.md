@@ -1,18 +1,18 @@
 # F2 EM Structure Function — ML 
 
 A self-contained machine learning project that models and extrapolates the
-**proton electromagnetic structure function F₂(x, Q²)** into the low-x region
+**proton electromagnetic structure function F<sub>2</sub>(x, Q<sup>2</sup>)** into the low-x region
 using a full suite of supervised and unsupervised methods.
 
 ## Physics background
 
-F₂ is measured in Deep Inelastic Scattering (DIS) experiments (H1, ZEUS, NMC, SLAC, BCDMS).
+F<sub>2</sub> is measured in Deep Inelastic Scattering (DIS) experiments (H1, ZEUS, NMC, SLAC, BCDMS).
 It depends on two kinematic variables:
 
 * **x** — Bjorken scaling variable (parton momentum fraction)
-* **Q²** — photon virtuality (resolution scale)
+* **Q<sup>2</sup>** — photon virtuality (resolution scale)
 
-At very small x (x < 10<sup>-3<\sup>) experimental data are sparse. All models are
+At very small x (x < 10<sup>-3</sup>) experimental data are sparse. All models are
 trained on existing data and extrapolated into this low-x region.
 
 ## Project structure
