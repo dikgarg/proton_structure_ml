@@ -1,6 +1,6 @@
-# F2 EM Structure Function — ML Portfolio
+# F2 EM Structure Function — ML 
 
-A self-contained machine-learning project that models and extrapolates the
+A self-contained machine learning project that models and extrapolates the
 **proton electromagnetic structure function F₂(x, Q²)** into the low-x region
 using a full suite of supervised and unsupervised methods.
 
@@ -12,7 +12,7 @@ It depends on two kinematic variables:
 * **x** — Bjorken scaling variable (parton momentum fraction)
 * **Q²** — photon virtuality (resolution scale)
 
-At very small x (x < 10⁻⁴) experimental data are sparse. All models are
+At very small x (x < 10<sup>-3<\sup>) experimental data are sparse. All models are
 trained on existing data and extrapolated into this low-x region.
 
 ## Project structure
