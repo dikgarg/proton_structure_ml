@@ -1,4 +1,7 @@
 """
+Author: D. Garg
+May 10, 2026
+
 Feature engineering helpers for the F2 ML project.
 """
 
@@ -24,8 +27,8 @@ def add_physics_features(X):
         log10_x ** 2,         (small-x curvature)
         log10_Q2 ** 2,        (Q2-scaling curvature)
     """
-    lx = X[:, 0:1]
-    lQ2 = X[:, 1:2]
+    lx = X[:, 0:1] #X[:,0] but in a column shape
+    lQ2 = X[:, 1:2] #X[:,1] but in a column shape
     return np.hstack([lx, lQ2, lx * lQ2, lx ** 2, lQ2 ** 2])
 
 

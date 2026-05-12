@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Figures and output files
+results/figures/
+*.png
+*.pdf
+
+# Environment
+.env
+venv/
+.venv/
+
+# macOS
+.DS_Store

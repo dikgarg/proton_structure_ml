@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Run this from the project root to generate all notebooks:
+"""
+Author: D. Garg
+May 12, 2026
+Run this from the project root to generate all notebooks:
     python create_notebooks.py
 """
 

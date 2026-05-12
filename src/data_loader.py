@@ -1,4 +1,7 @@
 """
+Author: D. Garg
+May 10, 2026
+
 Data loading utilities for the F2 EM structure function ML project.
 
 File format (LeptonDIS .dat files):
@@ -66,9 +69,9 @@ def add_log_features(df):
 def split_data(df, test_size=0.2, seed=42):
     """Randomly split *df* into train / test DataFrames."""
     train, test = train_test_split(
-        df, test_size=test_size, random_state=seed, shuffle=True
+        df, test_size=test_size, random_state=seed, shuffle=True #shuffles the order of data b4 splitting
     )
-    return train.reset_index(drop=True), test.reset_index(drop=True)
+    return train.reset_index(drop=True), test.reset_index(drop=True) #drops the original indexing of rows
 
 
 def get_Xy(df, features=("log10_x", "log10_Q2"), target="F2"):
@@ -88,6 +91,6 @@ def low_x_grid(x_min=1e-6, x_max=1e-2, n_points=300, Q2_values=(1.0, 5.0, 15.0, 
     grids = {}
     for Q2 in Q2_values:
         lx = np.log10(x_arr)
-        lQ2 = np.full_like(lx, np.log10(Q2))
+        lQ2 = np.full_like(lx, np.log10(Q2)) #same log10(Q2) value with len(x_arr)
         grids[float(Q2)] = (x_arr, np.column_stack([lx, lQ2]))
     return grids
