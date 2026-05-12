@@ -18,7 +18,7 @@ trained on existing data and extrapolated into this low-x region.
 ## Project structure
 
 ```
-F2-ML-Portfolio/
+proton_structure_ml/
 ├── src/
 │   ├── data_loader.py     # data loading & feature utilities
 │   ├── features.py        # feature engineering helpers
@@ -57,7 +57,7 @@ F2-ML-Portfolio/
 
 ```bash
 git clone <your-repo>
-cd F2-ML-Portfolio
+cd proton_structure_ml
 pip install -r requirements.txt
 
 # (optional) regenerate notebooks
