@@ -39,7 +39,7 @@ def plot_coverage(df, ax=None, title="Data coverage in the $(x, Q^2)$ plane"):
     return ax
 
 
-def plot_F2_vs_x(df, Q2_centres, delta=0.1, figsize=None, ncols=3):
+def plot_F2_vs_x(df, Q2_centres, delta, figsize=None, ncols=3): #tolerance bins are not done correctly (i.e. delta)!!!! FIX
     """Grid of F₂ vs x panels, one per Q² bin.
 
     delta_log=0.05 means Q2 is within +/-10% of the centre value.
@@ -56,7 +56,7 @@ def plot_F2_vs_x(df, Q2_centres, delta=0.1, figsize=None, ncols=3):
         ax = axes_flat[i]
         lo = 10 ** (np.log10(Q2c) - delta_log)
         hi = 10 ** (np.log10(Q2c) + delta_log)
-        sub = df[(df["Q2"] >= lo) & (df["Q2"] <= hi)]
+        sub = df[(df["Q2"] >= lo) & (df["Q2"] <= hi)] 
         for exp, grp in sub.groupby("experiment"):
             ax.errorbar(
                 grp["x"], grp["F2"],
